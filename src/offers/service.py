@@ -12,6 +12,7 @@ class OfferService:
         documents = await cursor.to_list(length=limit)
         for document in documents:
             document["id"] = str(document["_id"])
+            del document["_id"]
         return documents
 
     async def get_all_offers(self):
@@ -19,21 +20,25 @@ class OfferService:
         documents = await cursor.to_list()
         for document in documents:
             document["id"] = str(document["_id"])
+            del document["_id"]
         return documents
 
     async def get_offer(self, id: str):
         document = await offers_collection.find_one({"_id": ObjectId(id)})
         document["id"] = str(document["_id"])
+        del document["_id"]
         return document
 
     async def update_offer(self, id: str, offer: Offer):
         result = await offers_collection.find_one_and_update({"_id": ObjectId(id)}, {"$set": offer.to_bson()}, return_document=True)
         if result:
             result["id"] = str(result["_id"])
+            del result["_id"]
         return result
 
     async def delete_offer(self, id: str):
         result = await offers_collection.find_one_and_delete({"_id": ObjectId(id)})
         if result:
             result["id"] = str(result["_id"])
+            del result["_id"]
         return result

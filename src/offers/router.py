@@ -5,33 +5,33 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter(tags=["offers"])
 service = OfferService()
 
-@router.post("/offers")
+@router.post("")
 async def create_offer(offer: Offer):
     return await service.create_offer(offer)
 
-@router.get("/offers")
+@router.get("")
 async def get_offers(page: int = 0, limit: int = 10):
     return await service.get_offers(page, limit)
 
-@router.get("/offers/all")
+@router.get("/all")
 async def get_all_offers():
     return await service.get_all_offers()
 
-@router.get("/offers/{id}")
+@router.get("/{id}")
 async def get_offer(id: str):
     offer = await service.get_offer(id)
     if offer:
         return offer
     raise HTTPException(status_code=404, detail="Offer not found")
 
-@router.put("/offers/{id}")
+@router.put("/{id}")
 async def update_offer(id: str, offer: Offer):
     updated_offer = await service.update_offer(id, offer)
     if updated_offer:
         return updated_offer
     raise HTTPException(status_code=404, detail="Offer not found")
 
-@router.delete("/offers/{id}")
+@router.delete("/{id}")
 async def delete_offer(id: str):
     deleted_offer = await service.delete_offer(id)
     if deleted_offer:
